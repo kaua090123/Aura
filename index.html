@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Hub | Categorized</title>
+    <style>
+        :root {
+            --js: #f7df1e;
+            --css: #264de4;
+            --py: #3776ab;
+            --html: #e34c26;
+            --bg: #050505;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { font-size: 1.8rem; letter-spacing: 2px; background: linear-gradient(to right, #8b5cf6, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Barra de Filtros */
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #888;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: white;
+            color: black;
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+        }
+
+        /* Container de Projetos */
+        .projects-grid {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .project-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 25px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            text-decoration: none;
+            color: #ccc;
+            transition: all 0.4s ease;
+        }
+
+        /* Esconder cards filtrados */
+        .project-card.hidden {
+            display: none;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .project-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+            color: white;
+        }
+
+        .aura-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 15px; }
+        .dot-js { background: var(--js); box-shadow: 0 0 10px var(--js); }
+        .dot-css { background: var(--css); box-shadow: 0 0 10px var(--css); }
+        .dot-python { background: var(--py); box-shadow: 0 0 10px var(--py); }
+        .dot-html { background: var(--html); box-shadow: 0 0 10px var(--html); }
+
+        .link-info { display: flex; align-items: center; }
+        .tag { font-size: 0.6rem; margin-left: 10px; opacity: 0.5; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>DATABASE_PROJS</h1>
+    </header>
+
+    <nav class="filter-bar">
+        <button class="filter-btn active" onclick="filterLinks('all', this)">TODOS</button>
+        <button class="filter-btn" onclick="filterLinks('js', this)">JAVASCRIPT</button>
+        <button class="filter-btn" onclick="filterLinks('html', this)">HTML</button>
+        <button class="filter-btn" onclick="filterLinks('css', this)">CSS</button>
+        <button class="filter-btn" onclick="filterLinks('python', this)">PYTHON</button>
+    </nav>
+
+    <div class="projects-grid" id="projectContainer">
+        
+        <a href="https://github.com/kaua090123/batata-suprema-aula-1" class="project-card" data-category="js">
+            <div class="link-info">
+                <div class="aura-dot dot-js"></div>
+                <span>Aula 1</span>
+                <span class="tag">JS</span>
+            </div>
+            <span>↗</span>
+        </a>
+
+        <a href="URL_AQUI" class="project-card" data-category="html">
+            <div class="link-info">
+                <div class="aura-dot dot-html"></div>
+                <span>teste html</span>
+                <span class="tag">HTML</span>
+            </div>
+            <span>↗</span>
+        </a>
+
+        <a href="URL_AQUI" class="project-card" data-category="python">
+            <div class="link-info">
+                <div class="aura-dot dot-python"></div>
+                <span>teste python</span>
+                <span class="tag">PY</span>
+            </div>
+            <span>↗</span>
+        </a>
+
+        <a href="URL_AQUI" class="project-card" data-category="css">
+            <div class="link-info">
+                <div class="aura-dot dot-css"></div>
+                <span>teste css</span>
+                <span class="tag">CSS</span>
+            </div>
+            <span>↗</span>
+        </a>
+
+    </div>
+
+    <script>
+        function filterLinks(category, btn) {
+            // Atualizar botões
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Filtrar cards
+            const cards = document.querySelectorAll('.project-card');
+            
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
