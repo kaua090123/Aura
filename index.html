@@ -7,10 +7,10 @@
     <style>
         :root {
             --js: #f7df1e;
-            --css: #264de4;
-            --py: #3776ab;
-            --html: #e34c26;
-            --bg: #050505;
+            --analise: #00c8ff;
+            --py: #41ab37;
+            --html: #ff0000;
+            --bg: #000000;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -93,7 +93,7 @@
 
         .aura-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 15px; }
         .dot-js { background: var(--js); box-shadow: 0 0 10px var(--js); }
-        .dot-css { background: var(--css); box-shadow: 0 0 10px var(--css); }
+        .dot-analise { background: var(--analise); box-shadow: 0 0 10px var(--analise); }
         .dot-python { background: var(--py); box-shadow: 0 0 10px var(--py); }
         .dot-html { background: var(--html); box-shadow: 0 0 10px var(--html); }
 
@@ -104,14 +104,14 @@
 <body>
 
     <header>
-        <h1>DATABASE_PROJS</h1>
+        <h1>Projetos de Kauã Moretão</h1>
     </header>
 
     <nav class="filter-bar">
         <button class="filter-btn active" onclick="filterLinks('all', this)">TODOS</button>
         <button class="filter-btn" onclick="filterLinks('js', this)">JAVASCRIPT</button>
         <button class="filter-btn" onclick="filterLinks('html', this)">HTML</button>
-        <button class="filter-btn" onclick="filterLinks('css', this)">CSS</button>
+        <button class="filter-btn" onclick="filterLinks('analise', this)">Analise</button>
         <button class="filter-btn" onclick="filterLinks('python', this)">PYTHON</button>
     </nav>
 
@@ -121,6 +121,24 @@
             <div class="link-info">
                 <div class="aura-dot dot-js"></div>
                 <span>Aula 1</span>
+                <span class="tag">JS</span>
+            </div>
+            <span>↗</span>
+        </a>
+
+        <a href="https://github.com/kaua090123/Usando-Formes" class="project-card" data-category="js">
+            <div class="link-info">
+                <div class="aura-dot dot-js"></div>
+                <span>Usando formes</span>
+                <span class="tag">JS</span>
+            </div>
+            <span>↗</span>
+        </a>
+
+        <a href="https://github.com/kaua090123/variavel-2" class="project-card" data-category="js">
+            <div class="link-info">
+                <div class="aura-dot dot-js"></div>
+                <span>Variaveis</span>
                 <span class="tag">JS</span>
             </div>
             <span>↗</span>
@@ -144,11 +162,29 @@
             <span>↗</span>
         </a>
 
-        <a href="URL_AQUI" class="project-card" data-category="css">
+        <a href="https://gamma.app/docs/Propriedade-Intelectual-e-Direitos-Autorais-plecgs0h3p7eaaj?mode=doc" class="project-card" data-category="analise">
             <div class="link-info">
-                <div class="aura-dot dot-css"></div>
-                <span>teste css</span>
-                <span class="tag">CSS</span>
+                <div class="aura-dot dot-analise"></div>
+                <span>Propriedade Intelectual</span>
+                <span class="tag">analise</span>
+            </div>
+            <span>↗</span>
+        </a>
+
+        <a href="https://gamma.app/docs/Descubra-o-App-Escolar-que-Vai-Transformar-Seu-Dia-a-Dia-qwwut3magya9tln?mode=doc" class="project-card" data-category="analise">
+            <div class="link-info">
+                <div class="aura-dot dot-analise"></div>
+                <span>Agenda escolar</span>
+                <span class="tag">analise</span>
+            </div>
+            <span>↗</span>
+        </a>
+
+        <a href="https://gamma.app/docs/Ecossistema-Global-de-Startups-2026-ymv6ite0uy9vcrm" class="project-card" data-category="analise">
+            <div class="link-info">
+                <div class="aura-dot dot-analise"></div>
+                <span>Ecossistema Global de Startups 2026</span>
+                <span class="tag">analise</span>
             </div>
             <span>↗</span>
         </a>
@@ -175,3 +211,4 @@
     </script>
 </body>
 </html>
+
