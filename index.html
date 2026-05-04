@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dev Hub | Categorized</title>
+    <title>Dev Hub Mobile | Kauã Moretão</title>
     <style>
         :root {
             --js: #f7df1e;
-            --analise: #00c8ff;
             --py: #41ab37;
-            --html: #ff0000;
+            --html: #ff5722;
+            --mobile: #d946ef; /* Cor para a categoria Mobile */
             --bg: #000000;
+            --accent: #8b5cf6;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
 
         body {
             background-color: var(--bg);
@@ -22,193 +23,183 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 20px;
         }
 
-        header { text-align: center; margin-bottom: 30px; }
-        h1 { font-size: 1.8rem; letter-spacing: 2px; background: linear-gradient(to right, #8b5cf6, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        header { text-align: center; margin: 20px 0 30px; }
+        h1 { font-size: 1.5rem; letter-spacing: 1px; background: linear-gradient(to right, #8b5cf6, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* Barra de Filtros */
-        .filter-bar {
+        /* GERADOR QR CODE */
+        .qr-section {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .qr-input-group {
             display: flex;
-            gap: 10px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column; gap: 12px;
         }
+
+        input[type="text"] {
+            width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333;
+            background: #111; color: white; font-size: 1rem; outline: none;
+        }
+
+        .generate-btn {
+            background: var(--accent); color: white; border: none; padding: 15px;
+            border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 1rem;
+        }
+
+        #qrcode-container { margin-top: 20px; display: none; }
+        #qrcode-container img { border: 5px solid white; border-radius: 10px; width: 150px; }
+
+        /* FILTROS */
+        .filter-bar {
+            display: flex; gap: 8px; margin-bottom: 30px; width: 100%;
+            overflow-x: auto; padding-bottom: 10px; scrollbar-width: none;
+        }
+        .filter-bar::-webkit-scrollbar { display: none; }
 
         .filter-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #888;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 0.8rem;
-            font-weight: bold;
+            background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+            color: #aaa; padding: 10px 20px; border-radius: 25px; white-space: nowrap;
+            font-size: 0.75rem; font-weight: bold;
         }
+        .filter-btn.active { background: white; color: black; }
 
-        .filter-btn:hover, .filter-btn.active {
-            background: white;
-            color: black;
-            box-shadow: 0 0 15px rgba(255,255,255,0.3);
-        }
-
-        /* Container de Projetos */
+        /* LISTA DE PROJETOS */
         .projects-grid {
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            width: 100%; max-width: 450px; display: flex; flex-direction: column; gap: 15px;
         }
 
         .project-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 25px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            text-decoration: none;
-            color: #ccc;
-            transition: all 0.4s ease;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 15px; background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px;
+            text-decoration: none; color: #eee; transition: 0.3s;
         }
 
-        /* Esconder cards filtrados */
-        .project-card.hidden {
-            display: none;
-            opacity: 0;
-            transform: scale(0.9);
-        }
+        .project-card:active { background: rgba(255, 255, 255, 0.12); }
+        .project-card.hidden { display: none; }
 
-        .project-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateX(5px);
-            color: white;
-        }
-
-        .aura-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 15px; }
+        .link-info { display: flex; align-items: center; flex: 1; }
+        .aura-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 12px; flex-shrink: 0; }
+        
         .dot-js { background: var(--js); box-shadow: 0 0 10px var(--js); }
-        .dot-analise { background: var(--analise); box-shadow: 0 0 10px var(--analise); }
-        .dot-python { background: var(--py); box-shadow: 0 0 10px var(--py); }
         .dot-html { background: var(--html); box-shadow: 0 0 10px var(--html); }
+        .dot-python { background: var(--py); box-shadow: 0 0 10px var(--py); }
+        .dot-mobile { background: var(--mobile); box-shadow: 0 0 10px var(--mobile); }
 
-        .link-info { display: flex; align-items: center; }
-        .tag { font-size: 0.6rem; margin-left: 10px; opacity: 0.5; text-transform: uppercase; }
+        .name-text { font-size: 0.85rem; font-weight: 500; line-height: 1.2; }
+        .tag { font-size: 0.55rem; opacity: 0.4; text-transform: uppercase; display: block; margin-top: 2px; }
+
+        .mini-qr {
+            width: 45px; height: 45px; background: white; padding: 2px;
+            border-radius: 6px; margin-left: 15px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .mini-qr img { width: 100%; height: 100%; }
+
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Projetos de Kauã Moretão</h1>
+        <h1>Kauã Dev Hub</h1>
     </header>
+
+    <div class="qr-section">
+        <div class="qr-input-group">
+            <input type="text" id="qr-input" placeholder="Novo link para QR Code...">
+            <button class="generate-btn" onclick="generateQR()">Gerar QR Code</button>
+        </div>
+        <div id="qrcode-container">
+            <img id="qr-image" src="" alt="QR Code">
+        </div>
+    </div>
 
     <nav class="filter-bar">
         <button class="filter-btn active" onclick="filterLinks('all', this)">TODOS</button>
-        <button class="filter-btn" onclick="filterLinks('js', this)">JAVASCRIPT</button>
-        <button class="filter-btn" onclick="filterLinks('html', this)">HTML</button>
-        <button class="filter-btn" onclick="filterLinks('analise', this)">Analise</button>
+        <button class="filter-btn" onclick="filterLinks('mobile', this)">MOBILE</button>
+        <button class="filter-btn" onclick="filterLinks('js', this)">JS</button>
+        <button class="filter-btn" onclick="filterLinks('html', this)">SITES/HTML</button>
         <button class="filter-btn" onclick="filterLinks('python', this)">PYTHON</button>
     </nav>
 
     <div class="projects-grid" id="projectContainer">
         
-        <a href="https://github.com/kaua090123/batata-suprema-aula-1" class="project-card" data-category="js">
-            <div class="link-info">
-                <div class="aura-dot dot-js"></div>
-                <span>Aula 1</span>
-                <span class="tag">JS</span>
-            </div>
-            <span>↗</span>
-        </a>
+        <script>
+            const baseTodos = "https://github.com/kaua090123/todos/blob/main/";
 
-        <a href="https://github.com/kaua090123/Usando-Formes" class="project-card" data-category="js">
-            <div class="link-info">
-                <div class="aura-dot dot-js"></div>
-                <span>Usando formes</span>
-                <span class="tag">JS</span>
-            </div>
-            <span>↗</span>
-        </a>
+            const projetos = [
+                // CATEGORIA MOBILE (SNACK EXPO)
+                { name: "Greedy Violet Pretzel", cat: "mobile", url: "https://snack.expo.dev/@khzamo/greedy-violet-pretzel" },
+                { name: "Shallow Blue Strawberries", cat: "mobile", url: "https://snack.expo.dev/@khzamo/shallow-blue-strawberries" },
 
-        <a href="https://github.com/kaua090123/variavel-2" class="project-card" data-category="js">
-            <div class="link-info">
-                <div class="aura-dot dot-js"></div>
-                <span>Variaveis</span>
-                <span class="tag">JS</span>
-            </div>
-            <span>↗</span>
-        </a>
+                // CATEGORIA JS (REPO TODOS)
+                { name: "Brake Continue", cat: "js", url: baseTodos + "Brake_continue.js" },
+                { name: "Olá Word JS", cat: "js", url: baseTodos + "OláWord.js" },
+                { name: "Array JS", cat: "js", url: baseTodos + "array.js" },
+                { name: "Baskara", cat: "js", url: baseTodos + "baskara.js" },
+                { name: "Carro JS", cat: "js", url: baseTodos + "carro.js" },
+                { name: "Conjunto de Números", cat: "js", url: baseTodos + "consjuntodenumeros.js" },
+                { name: "Filtrar JS", cat: "js", url: baseTodos + "filtrar.js" },
+                { name: "Notas JS", cat: "js", url: baseTodos + "notas.js" },
+                { name: "Objeto JS", cat: "js", url: baseTodos + "objeto.js" },
+                { name: "Operações Básicas", cat: "js", url: baseTodos + "operacoesbasicas.js" },
+                { name: "Triângulo JS", cat: "js", url: baseTodos + "triângulo.js" },
+                { name: "Usando Break", cat: "js", url: baseTodos + "usandobreak.js" },
+                { name: "Usando Forme", cat: "js", url: baseTodos + "usandoforme.js" },
+                { name: "Variáveis JS", cat: "js", url: baseTodos + "variáveis.js" },
 
-        <a href="URL_AQUI" class="project-card" data-category="html">
-            <div class="link-info">
-                <div class="aura-dot dot-html"></div>
-                <span>teste html</span>
-                <span class="tag">HTML</span>
-            </div>
-            <span>↗</span>
-        </a>
+                // CATEGORIA HTML / SITES
+                { name: "Olá Palavra HTML", cat: "html", url: baseTodos + "OláPalavra.html" },
+                { name: "Trabalho HTML", cat: "html", url: baseTodos + "trabalho.html" },
+                { name: "Transportadora", cat: "html", url: "https://kaua090123.github.io/transportadora/index" },
+                { name: "Cafeteria", cat: "html", url: "https://kaua090123.github.io/cafeteria/" },
+                { name: "Barbearia", cat: "html", url: "https://kaua090123.github.io/barbearia/barbearia/paginas/index.html" },
+                { name: "Pizzaria", cat: "html", url: "https://kaua090123.github.io/pizza/index.html" },
+                { name: "Meu Site Pessoal", cat: "html", url: "https://kaua090123.github.io/Meu-Site./index" },
+                
+                // CATEGORIA PYTHON
+                { name: "Filtrar (Python)", cat: "python", url: "https://github.com/kaua090123/filtrar" },
+                { name: "Aluno Robson", cat: "python", url: "https://github.com/kaua090123/aluno-Robson" }
+            ];
 
-        <a href="https://github.com/kaua090123/filtrar" class="project-card" data-category="python">
-            <div class="link-info">
-                <div class="aura-dot dot-python"></div>
-                <span>filtrar</span>
-                <span class="tag">PY</span>
-            </div>
-            <span>↗</span>
-        </a>
+            const container = document.getElementById('projectContainer');
 
-        <a href="https://gamma.app/docs/Propriedade-Intelectual-e-Direitos-Autorais-plecgs0h3p7eaaj?mode=doc" class="project-card" data-category="analise">
-            <div class="link-info">
-                <div class="aura-dot dot-analise"></div>
-                <span>Propriedade Intelectual</span>
-                <span class="tag">analise</span>
-            </div>
-            <span>↗</span>
-        </a>
-
-        <a href="https://gamma.app/docs/Descubra-o-App-Escolar-que-Vai-Transformar-Seu-Dia-a-Dia-qwwut3magya9tln?mode=doc" class="project-card" data-category="analise">
-            <div class="link-info">
-                <div class="aura-dot dot-analise"></div>
-                <span>Agenda escolar</span>
-                <span class="tag">analise</span>
-            </div>
-            <span>↗</span>
-        </a>
-
-        <a href="https://gamma.app/docs/Ecossistema-Global-de-Startups-2026-ymv6ite0uy9vcrm" class="project-card" data-category="analise">
-            <div class="link-info">
-                <div class="aura-dot dot-analise"></div>
-                <span>Ecossistema Global de Startups 2026</span>
-                <span class="tag">analise</span>
-            </div>
-            <span>↗</span>
-        </a>
-
-        <a href="https://gamma.app/docs/Metricas-e-Melhorias-nos-Negocios-O-Ciclo-da-Excelencia-Operacion-71w4pn4l9hotrxc" class="project-card" data-category="analise">
-            <div class="link-info">
-                <div class="aura-dot dot-analise"></div>
-                <span>Métricas e Melhoria Contínua</span>
-                <span class="tag">analise</span>
-            </div>
-            <span>↗</span>
-        </a>
+            projetos.forEach(p => {
+                const qrUrl = `https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl=${encodeURIComponent(p.url)}`;
+                container.innerHTML += `
+                    <a href="${p.url}" class="project-card" data-category="${p.cat}">
+                        <div class="link-info">
+                            <div class="aura-dot dot-${p.cat}"></div>
+                            <div>
+                                <span class="name-text">${p.name}</span>
+                                <span class="tag">${p.cat}</span>
+                            </div>
+                        </div>
+                        <div class="mini-qr">
+                            <img src="${qrUrl}" alt="QR">
+                        </div>
+                    </a>
+                `;
+            });
+        </script>
 
     </div>
 
     <script>
         function filterLinks(category, btn) {
-            // Atualizar botões
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-
-            // Filtrar cards
             const cards = document.querySelectorAll('.project-card');
-            
             cards.forEach(card => {
                 if (category === 'all' || card.getAttribute('data-category') === category) {
                     card.classList.remove('hidden');
@@ -217,8 +208,16 @@
                 }
             });
         }
+
+        function generateQR() {
+            const input = document.getElementById('qr-input').value;
+            const container = document.getElementById('qrcode-container');
+            const img = document.getElementById('qr-image');
+            if (input.trim() !== "") {
+                img.src = `https://chart.googleapis.com/chart?cht=qr&chs=400x400&chl=${encodeURIComponent(input)}`;
+                container.style.display = "block";
+            }
+        }
     </script>
 </body>
 </html>
-
-
